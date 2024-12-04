@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { tv } from "tailwind-variants";
 
 export const title = tv({

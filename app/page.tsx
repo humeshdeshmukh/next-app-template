@@ -11,14 +11,15 @@ export default function Home() {
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
       <div className="inline-block max-w-xl text-center justify-center">
-        <span className={title()}>Make&nbsp;</span>
-        <span className={title({ color: "violet" })}>beautiful&nbsp;</span>
+        <span className={title()}>Welcome to&nbsp;</span>
+        <span className={title({ color: "violet" })}>TaxSim&nbsp;</span>
+        <span className={title()}>2425</span>
         <br />
         <span className={title()}>
-          websites regardless of your design experience.
+          Your tool for simulating and analyzing tax data.
         </span>
         <div className={subtitle({ class: "mt-4" })}>
-          Beautiful, fast and modern React UI library.
+          Visualize and forecast tax scenarios for the future.
         </div>
       </div>
 
@@ -30,24 +31,23 @@ export default function Home() {
             radius: "full",
             variant: "shadow",
           })}
-          href={siteConfig.links.docs}
+          href="/Tax-Simulation"  // Link to tax simulation page
+          target="_blank"  // Opens the link in a new tab
         >
-          Documentation
+          Get Started
         </Link>
         <Link
-          isExternal
           className={buttonStyles({ variant: "bordered", radius: "full" })}
-          href={siteConfig.links.github}
+          href="/Tax-Rules"  // Link to tax rules page (without opening in a new tab)
         >
-          <GithubIcon size={20} />
-          GitHub
+          Learn More
         </Link>
       </div>
 
       <div className="mt-8">
         <Snippet hideCopyButton hideSymbol variant="bordered">
           <span>
-            Get started by editing <Code color="primary">app/page.tsx</Code>
+            Start by simulating tax scenarios for 2425 and beyond.
           </span>
         </Snippet>
       </div>
