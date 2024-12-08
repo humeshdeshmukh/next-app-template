@@ -1,31 +1,42 @@
+/* eslint-disable prettier/prettier */
 'use client';
 
 import { useState } from 'react';
 
 export default function AISuggestionsPage() {
-  const [income, setIncome] = useState('');
-  const [age, setAge] = useState('');
-  const [investments, setInvestments] = useState<string[]>([]);
+  const [formData, setFormData] = useState({
+    income: '',
+    age: '',
+    investments: [] as string[],
+    homeLoanInterest: '',
+    insurancePremiums: '',
+    medicalExpenses: '',
+    capitalGains: '',
+    retirementSavings: '',
+    charitableDonations: '',
+    otherExpenses: '',
+  });
   const [suggestions, setSuggestions] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Handle input change for income and age
+  // Update form values dynamically
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    if (id === 'income') setIncome(value);
-    if (id === 'age') setAge(value);
+    const { id, value, type } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: type === 'number' && value.length > 0 ? Math.min(Number(value), Number.MAX_SAFE_INTEGER).toString() : value,
+    }));
   };
 
-  // Handle investment selection
   const handleInvestmentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
-    setInvestments((prev) =>
-      checked ? [...prev, value] : prev.filter((item) => item !== value)
-    );
+    setFormData((prev) => ({
+      ...prev,
+      investments: checked ? [...prev.investments, value] : prev.investments.filter((item) => item !== value),
+    }));
   };
 
-  // Fetch AI tax suggestions from the API
   const fetchAISuggestions = async () => {
     setLoading(true);
     setError(null);
@@ -33,20 +44,12 @@ export default function AISuggestionsPage() {
     try {
       const response = await fetch('/api/ai-tax-suggestions', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ income, age, investments }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
-
       const data = await response.json();
-
-      if (response.ok) {
-        setSuggestions(data.suggestions || 'No suggestions available.');
-      } else {
-        setError(data.error || 'Failed to fetch suggestions. Please try again.');
-      }
-    } catch (err) {
+      response.ok ? setSuggestions(data.suggestions || 'No suggestions available.') : setError(data.error || 'Failed to fetch suggestions.');
+    } catch {
       setError('An error occurred. Please try again later.');
     } finally {
       setLoading(false);
@@ -57,91 +60,64 @@ export default function AISuggestionsPage() {
     <div className="max-w-2xl mx-auto p-8">
       <h1 className="text-3xl font-bold mb-6">AI-Powered Tax Suggestions</h1>
 
-      {/* Income Input */}
-      <div className="mb-4">
-        <label htmlFor="income" className="block text-lg font-medium">
-          Enter Your Annual Income (₹):
-        </label>
-        <input
-          id="income"
-          type="number"
-          value={income}
-          onChange={handleInputChange}
-          placeholder="Enter your income"
-          className="mt-2 p-3 border border-gray-300 rounded-lg w-full"
-        />
-      </div>
-
-      {/* Age Input */}
-      <div className="mb-4">
-        <label htmlFor="age" className="block text-lg font-medium">
-          Enter Your Age:
-        </label>
-        <input
-          id="age"
-          type="number"
-          value={age}
-          onChange={handleInputChange}
-          placeholder="Enter your age"
-          className="mt-2 p-3 border border-gray-300 rounded-lg w-full"
-        />
-      </div>
-
-      {/* Investment Preferences */}
-      <div className="mb-4">
-        <label className="block text-lg font-medium">
-          Select Your Investments:
-        </label>
-        <div className="mt-2 space-y-2">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              value="real-estate"
-              onChange={handleInvestmentChange}
-              className="mr-2"
-            />
-            Real Estate
-          </label>
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              value="stocks"
-              onChange={handleInvestmentChange}
-              className="mr-2"
-            />
-            Stocks
-          </label>
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              value="mutual-funds"
-              onChange={handleInvestmentChange}
-              className="mr-2"
-            />
-            Mutual Funds
-          </label>
+      {[
+        { id: 'income', label: 'Enter Your Annual Income (₹)', placeholder: 'Enter your income' },
+        { id: 'age', label: 'Enter Your Age', placeholder: 'Enter your age' },
+        { id: 'homeLoanInterest', label: 'Home Loan Interest Paid (₹)', placeholder: 'Enter your home loan interest' },
+        { id: 'insurancePremiums', label: 'Health Insurance Premiums (₹)', placeholder: 'Enter your insurance premiums' },
+        { id: 'medicalExpenses', label: 'Medical Expenses (₹)', placeholder: 'Enter your medical expenses' },
+        { id: 'capitalGains', label: 'Capital Gains (₹)', placeholder: 'Enter your capital gains' },
+        { id: 'retirementSavings', label: 'Retirement Savings (₹)', placeholder: 'Enter your retirement savings' },
+        { id: 'charitableDonations', label: 'Charitable Donations (₹)', placeholder: 'Enter your charitable donations' },
+        { id: 'otherExpenses', label: 'Other Expenses (₹)', placeholder: 'Enter other tax-saving expenses' },
+      ].map(({ id, label, placeholder }) => (
+        <div className="mb-4" key={id}>
+          <label htmlFor={id} className="block text-lg font-medium">{label}</label>
+          <input
+            id={id}
+            type="number"
+            value={formData[id as keyof typeof formData] as string}
+            onChange={handleInputChange}
+            placeholder={placeholder}
+            className="mt-2 p-3 border border-gray-300 rounded-lg w-full"
+          />
         </div>
+      ))}
+
+      <div className="mb-4">
+        <label className="block text-lg font-medium">Select Your Investments:</label>
+        {['real-estate', 'stocks', 'mutual-funds'].map((investment) => (
+          <label key={investment} className="flex items-center mt-2">
+            <input
+              type="checkbox"
+              value={investment}
+              onChange={handleInvestmentChange}
+              checked={formData.investments.includes(investment)}
+              className="mr-2"
+            />
+            {investment.replace('-', ' ')}
+          </label>
+        ))}
       </div>
 
-      {/* Error Message */}
       {error && <p className="text-red-500 mt-2">{error}</p>}
 
-      {/* Fetch Suggestions Button */}
-      <div className="mt-4">
-        <button
-          onClick={fetchAISuggestions}
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-          disabled={loading}
-        >
-          {loading ? 'Fetching Suggestions...' : 'Get AI Suggestions'}
-        </button>
-      </div>
+      <button
+        onClick={fetchAISuggestions}
+        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        disabled={loading}
+      >
+        {loading ? 'Fetching Suggestions...' : 'Get AI Suggestions'}
+      </button>
 
-      {/* Suggestions Display */}
       {suggestions && (
-        <div className="mt-8 p-6 bg-black text-white rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">AI Suggestions</h2>
-          <p className="whitespace-pre-wrap">{suggestions}</p>
+        <div className="mt-6 p-4 border border-gray-300 rounded-lg bg-gray">
+          <h2 className="text-2xl font-semibold">Tax Suggestions:</h2>
+          <ul className="mt-2 list-disc pl-6">
+            {suggestions.split('\n').map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
