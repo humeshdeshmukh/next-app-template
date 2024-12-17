@@ -2,8 +2,8 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Next.js + NextUI",
-  description: "Make beautiful websites regardless of your design experience.",
+  name: "TaxSim 2425",
+  description: "it is taxsim 2425 is tax simulation and hot to apply for tax gauid .",
   navItems: [
     {
       label: "Home",
@@ -18,8 +18,8 @@ export const siteConfig = {
       href: "/Tax-Rules",
     },
     {
-      label: "Tax-Graphs",
-      href: "/Tax-Graphs",
+      label: "How to apply",
+      href: "/How-to-apply",
     },
     {
       label: " AI-Suggestions",
