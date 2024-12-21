@@ -28,16 +28,6 @@ export default function Home() {
       <div className="flex gap-3">
         <Link
           className={buttonStyles({
-            color: "primary",
-            radius: "full",
-            variant: "shadow",
-          })}
-          href="/calculator"
-        >
-          Advanced Calculator
-        </Link>
-        <Link
-          className={buttonStyles({
             color: "secondary",
             radius: "full",
             variant: "shadow",
@@ -52,36 +42,6 @@ export default function Home() {
         >
           Learn More
         </Link>
-      </div>
-
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl">
-        <Card className="p-4">
-          <CardHeader>
-            <h3 className={subtitle()}>Industrial Calculator</h3>
-          </CardHeader>
-          <CardBody>
-            <p>Advanced tax calculations for businesses across different industries. Features include:</p>
-            <ul className="list-disc list-inside mt-2">
-              <li>Industry-specific rates</li>
-              <li>Employee deductions</li>
-              <li>Revenue analysis</li>
-            </ul>
-          </CardBody>
-        </Card>
-        
-        <Card className="p-4">
-          <CardHeader>
-            <h3 className={subtitle()}>Tax Simulation</h3>
-          </CardHeader>
-          <CardBody>
-            <p>Simulate and forecast your tax scenarios with our advanced tools:</p>
-            <ul className="list-disc list-inside mt-2">
-              <li>Future projections</li>
-              <li>Rate comparisons</li>
-              <li>Optimization suggestions</li>
-            </ul>
-          </CardBody>
-        </Card>
       </div>
     </section>
   );

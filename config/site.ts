@@ -27,7 +27,7 @@ export const siteConfig = {
     },
     {
       label: "Advanced calculator",
-      href: "/calculator",
+      href: "/Advanced-calculator",
     },
 
   ],
