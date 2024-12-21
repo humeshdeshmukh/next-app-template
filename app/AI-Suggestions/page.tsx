@@ -85,20 +85,26 @@ export default function AISuggestionsPage() {
       ))}
 
       <div className="mb-4">
-        <label className="block text-lg font-medium">Select Your Investments:</label>
-        {['real-estate', 'stocks', 'mutual-funds'].map((investment) => (
-          <label key={investment} className="flex items-center mt-2">
-            <input
-              type="checkbox"
-              value={investment}
-              onChange={handleInvestmentChange}
-              checked={formData.investments.includes(investment)}
-              className="mr-2"
-            />
-            {investment.replace('-', ' ')}
-          </label>
-        ))}
+        <fieldset>
+          <legend className="block text-lg font-medium">Select Your Investments:</legend>
+          {['real-estate', 'stocks', 'mutual-funds'].map((investment) => (
+            <div key={investment} className="flex items-center mt-2">
+              <input
+                type="checkbox"
+                id={`investment-${investment}`}
+                value={investment}
+                onChange={handleInvestmentChange}
+                checked={formData.investments.includes(investment)}
+                className="mr-2"
+              />
+              <label htmlFor={`investment-${investment}`}>
+                {investment.replace('-', ' ')}
+              </label>
+            </div>
+          ))}
+        </fieldset>
       </div>
+
 
       {error && <p className="text-red-500 mt-2">{error}</p>}
 

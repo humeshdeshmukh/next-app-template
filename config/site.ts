@@ -25,6 +25,11 @@ export const siteConfig = {
       label: " AI-Suggestions",
       href: "/AI-Suggestions",
     },
+    {
+      label: "Advanced calculator",
+      href: "/calculator",
+    },
+
   ],
   navMenuItems: [
     {
