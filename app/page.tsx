@@ -8,25 +8,25 @@ export default function Home() {
   const features = [
     {
       title: "Tax Simulation",
-      description: "Calculate and visualize your tax liability with our advanced tax simulation tool.",
+      description: "Get instant tax assessments with our AI-powered calculator that considers all deductions and exemptions.",
       icon: <FaCalculator className="w-6 h-6" />,
       href: "/Tax-Simulation"
     },
     {
       title: "Advanced Calculator",
-      description: "Complex financial calculations made simple with our comprehensive calculator.",
+      description: "Strategic tax planning tools to help you maximize savings and minimize tax liability year-round.",
       icon: <FaChartLine className="w-6 h-6" />,
       href: "/Advanced-calculator"
     },
     {
       title: "Tax Rules",
-      description: "Stay updated with the latest tax rules and regulations explained in simple terms.",
+      description: "Stay informed with real-time updates on tax laws, deadlines, and compliance requirements.",
       icon: <FaBook className="w-6 h-6" />,
       href: "/Tax-Rules"
     },
     {
       title: "AI Suggestions",
-      description: "Get personalized tax-saving suggestions powered by artificial intelligence.",
+      description: "Receive personalized tax optimization strategies and compliance guidance from our AI system.",
       icon: <FaRobot className="w-6 h-6" />,
       href: "/AI-Suggestions"
     }
@@ -35,13 +35,13 @@ export default function Home() {
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
       <div className="inline-block max-w-4xl text-center justify-center">
-        <h1 className={title({ color: "violet" })}>Smart Tax Planning&nbsp;</h1>
+        <h1 className={title({ color: "violet" })}>Professional Tax Solutions&nbsp;</h1>
         <h1 className={title()}>
-          Made Simple with&nbsp;
-          <span className={title({ color: "violet" })}>AI</span>
+          Powered by&nbsp;
+          <span className={title({ color: "violet" })}>Advanced AI</span>
         </h1>
         <h2 className={subtitle({ class: "mt-4" })}>
-          Optimize your tax planning with our intelligent tools and personalized suggestions
+          Maximize your tax savings with expert guidance and cutting-edge technology
         </h2>
       </div>
 
@@ -81,19 +81,19 @@ export default function Home() {
       </div>
 
       <div className="mt-16 text-center">
-        <h2 className={title({ size: "sm" })}>Why Choose Our Platform?</h2>
+        <h2 className={title({ size: "sm" })}>Why Trust Our Tax Platform?</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-6xl px-4">
           <div className="p-6 rounded-lg bg-default-50">
-            <h3 className="text-lg font-semibold mb-2">Accurate Calculations</h3>
-            <p className="text-default-500">Our advanced algorithms ensure precise tax calculations every time.</p>
+            <h3 className="text-lg font-semibold mb-2">100% Accuracy Guaranteed</h3>
+            <p className="text-default-500">Our tax calculations are backed by advanced algorithms and updated tax regulations.</p>
           </div>
           <div className="p-6 rounded-lg bg-default-50">
-            <h3 className="text-lg font-semibold mb-2">AI-Powered Insights</h3>
-            <p className="text-default-500">Get personalized suggestions to optimize your tax planning.</p>
+            <h3 className="text-lg font-semibold mb-2">Smart Tax Optimization</h3>
+            <p className="text-default-500">AI-driven insights to identify all possible deductions and tax-saving opportunities.</p>
           </div>
           <div className="p-6 rounded-lg bg-default-50">
-            <h3 className="text-lg font-semibold mb-2">User-Friendly Interface</h3>
-            <p className="text-default-500">Simple and intuitive design makes tax planning accessible to everyone.</p>
+            <h3 className="text-lg font-semibold mb-2">Compliance Assured</h3>
+            <p className="text-default-500">Stay compliant with automatic updates to tax laws and regulations.</p>
           </div>
         </div>
       </div>
