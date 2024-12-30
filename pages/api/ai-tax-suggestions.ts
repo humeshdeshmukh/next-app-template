@@ -1,29 +1,35 @@
 /* eslint-disable prettier/prettier */
-export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    const { 
-      income, 
-      age, 
-      investments, 
-      homeLoanInterest, 
-      insurancePremiums, 
-      medicalExpenses, 
-      capitalGains, 
-      retirementSavings, 
-      charitableDonations, 
-      otherExpenses, 
-      rentPayments, 
-      salary, 
-      children 
+import { NextApiRequest, NextApiResponse } from 'next';
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method === "POST") {
+    const {
+      income,
+      age,
+      investments,
+      homeLoanInterest,
+      insurancePremiums,
+      medicalExpenses,
+      capitalGains,
+      retirementSavings,
+      charitableDonations,
+      otherExpenses,
+      rentPayments,
+      children,
     } = req.body;
 
     let suggestions = `Based on your income of ₹${income}, here are advanced strategies to minimize your tax liability:\n`;
 
     // Tax-saving suggestions based on income slab
     if (income <= 250000) {
-      suggestions += "1. Your income falls within the exempt category. No tax is payable.\n";
+      suggestions +=
+        "1. Your income falls within the exempt category. No tax is payable.\n";
     } else if (income <= 500000) {
-      suggestions += "1. You can avail of the rebate under Section 87A to reduce your tax liability.\n";
+      suggestions +=
+        "1. You can avail of the rebate under Section 87A to reduce your tax liability.\n";
     } else if (income <= 1000000) {
       suggestions += `1. Consider investing in tax-saving instruments under Section 80C (₹1.5 lakh limit), such as:\n   - Public Provident Fund (PPF)\n   - Equity-Linked Savings Scheme (ELSS)\n   - National Savings Certificate (NSC)\n`;
       if (insurancePremiums) {
@@ -43,13 +49,13 @@ export default async function handler(req, res) {
     }
 
     // Tax Suggestions for Investments
-    if (investments?.includes('real-estate')) {
+    if (investments?.includes("real-estate")) {
       suggestions += `4. Investing in real estate provides deductions on home loan interest under Section 24. You can also explore the benefits of long-term capital gains tax exemption under Section 54.\n`;
     }
-    if (investments?.includes('stocks')) {
+    if (investments?.includes("stocks")) {
       suggestions += `5. Consider long-term equity investments to benefit from lower capital gains tax rates (10% for holding period over 1 year). You can also invest in the National Pension Scheme (NPS) for additional tax-saving benefits.\n`;
     }
-    if (investments?.includes('mutual-funds')) {
+    if (investments?.includes("mutual-funds")) {
       suggestions += `6. Mutual Funds can be an excellent way to diversify your portfolio. Equity Linked Savings Schemes (ELSS) offer tax benefits under Section 80C.\n`;
     }
 
@@ -101,8 +107,12 @@ export default async function handler(req, res) {
     // Tax-loss Harvesting
     suggestions += `20. Engage in tax-loss harvesting to offset gains by selling investments that are in a loss position. This strategy can help minimize your taxable capital gains.\n`;
 
-    res.status(200).json({ suggestions });
+    try {
+      res.status(200).json({ suggestions });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to generate tax suggestions" });
+    }
   } else {
-    res.status(405).json({ error: 'Method Not Allowed' });
+    res.status(405).json({ error: "Method not allowed" });
   }
 }

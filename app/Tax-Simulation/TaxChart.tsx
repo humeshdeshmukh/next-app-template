@@ -1,16 +1,22 @@
 "use client";
 
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 interface TaxChartProps {
-  tax: number;
   breakdown: string[];
 }
 
-export default function TaxChart({ tax, breakdown }: TaxChartProps) {
+const TaxChart: React.FC<TaxChartProps> = ({ breakdown }) => {
   // Parse breakdown into data for the chart
   const labels = breakdown.map((item, index) => `Slab ${index + 1}`);
   const dataValues = breakdown.map((item) => {
@@ -52,3 +58,5 @@ export default function TaxChart({ tax, breakdown }: TaxChartProps) {
     </div>
   );
 }
+
+export default TaxChart;

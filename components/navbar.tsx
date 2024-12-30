@@ -13,12 +13,7 @@ import NextLink from "next/link";
 import clsx from "clsx";
 
 import { ThemeSwitch } from "@/components/theme-switch";
-import {
-  TwitterIcon,
-  GithubIcon,
-  DiscordIcon,
-  Logo,
-} from "@/components/icons";
+import { TwitterIcon, GithubIcon, DiscordIcon, Logo } from "@/components/icons";
 import { siteConfig } from "@/config/site";
 
 export const Navbar = () => {
@@ -87,8 +82,8 @@ export const Navbar = () => {
                   index === 2
                     ? "primary"
                     : index === siteConfig.navMenuItems.length - 1
-                    ? "danger"
-                    : "foreground"
+                      ? "danger"
+                      : "foreground"
                 }
                 href="#"
                 size="lg"

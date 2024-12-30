@@ -80,14 +80,14 @@ export default function TaxSimulationPage() {
         ? [
             { limit: 250000, rate: 0 },
             { limit: 500000, rate: 0.05 },
-            { limit: 1000000, rate: 0.20 },
-            { limit: Infinity, rate: 0.30 },
+            { limit: 1000000, rate: 0.2 },
+            { limit: Infinity, rate: 0.3 },
           ]
         : [
             { limit: 250000, rate: 0 },
             { limit: 500000, rate: 0.05 },
-            { limit: 1000000, rate: 0.10 },
-            { limit: Infinity, rate: 0.20 },
+            { limit: 1000000, rate: 0.1 },
+            { limit: Infinity, rate: 0.2 },
           ];
 
     let prevLimit = 0;
@@ -102,7 +102,7 @@ export default function TaxSimulationPage() {
 
         if (slab.rate > 0) {
           taxDetails.push(
-            `₹${taxableForSlab.toFixed(2)} taxed at ${slab.rate * 100}% = ₹${slabTax.toFixed(2)}`
+            `₹${taxableForSlab.toFixed(2)} taxed at ${slab.rate * 100}% = ₹${slabTax.toFixed(2)}`,
           );
         }
 
@@ -117,12 +117,12 @@ export default function TaxSimulationPage() {
     const potentialSavings: string[] = [];
     if (parsedDeductions.section80C < 150000) {
       potentialSavings.push(
-        "Consider investing more under Section 80C to maximize tax savings."
+        "Consider investing more under Section 80C to maximize tax savings.",
       );
     }
     if (parsedDeductions.section80D < 25000) {
       potentialSavings.push(
-        "Increase health insurance premium to claim full deduction under Section 80D."
+        "Increase health insurance premium to claim full deduction under Section 80D.",
       );
     }
 
@@ -134,56 +134,101 @@ export default function TaxSimulationPage() {
       <h1 className={title()}>Advanced Tax Simulation</h1>
       <div className="grid gap-6 mt-8 md:grid-cols-2">
         <div>
-          <label className="block text-xl font-semibold">Annual Income (₹)</label>
-          <input
-            type="text"
-            value={income}
-            onChange={handleIncomeChange}
-            className="mt-2 p-2 border border-gray-300 rounded w-full"
-            placeholder="Enter your income"
-          />
+          <div className="mb-4">
+            <label htmlFor="annualIncome" className="block text-sm font-medium mb-1">
+              Annual Income (₹):
+            </label>
+            <input
+              id="annualIncome"
+              type="number"
+              min="0"
+              step="1000"
+              className="w-full px-3 py-2 border rounded-md"
+              value={income}
+              onChange={handleIncomeChange}
+            />
+          </div>
 
-          <label className="block text-xl font-semibold mt-4">Tax Regime</label>
-          <select
-            value={taxRegime}
-            onChange={(e) => setTaxRegime(e.target.value)}
-            className="mt-2 p-2 border border-gray-300 rounded w-full"
-          >
-            <option value="old">Old Regime</option>
-            <option value="new">New Regime</option>
-          </select>
+          <div className="mb-4">
+            <label htmlFor="taxRegime" className="block text-sm font-medium mb-1">
+              Tax Regime:
+            </label>
+            <select
+              id="taxRegime"
+              value={taxRegime}
+              onChange={(e) => setTaxRegime(e.target.value)}
+              className="w-full px-3 py-2 border rounded-md"
+            >
+              <option value="old">Old Regime (with deductions)</option>
+              <option value="new">New Regime (without deductions)</option>
+            </select>
+          </div>
 
           {taxRegime === "old" && (
             <>
-              <label className="block text-xl font-semibold mt-4">Section 80C (₹)</label>
-              <input
-                type="text"
-                name="section80C"
-                value={deductions.section80C}
-                onChange={handleDeductionsChange}
-                className="mt-2 p-2 border border-gray-300 rounded w-full"
-                placeholder="Enter 80C Deduction"
-              />
+              <div className="mb-4">
+                <label htmlFor="section80C" className="block text-sm font-medium mb-1">
+                  Section 80C Deductions (₹):
+                </label>
+                <input
+                  id="section80C"
+                  type="number"
+                  min="0"
+                  step="1000"
+                  className="w-full px-3 py-2 border rounded-md"
+                  value={deductions.section80C}
+                  onChange={handleDeductionsChange}
+                  name="section80C"
+                />
+              </div>
 
-              <label className="block text-xl font-semibold mt-4">Section 80D (₹)</label>
-              <input
-                type="text"
-                name="section80D"
-                value={deductions.section80D}
-                onChange={handleDeductionsChange}
-                className="mt-2 p-2 border border-gray-300 rounded w-full"
-                placeholder="Enter 80D Deduction"
-              />
+              <div className="mb-4">
+                <label htmlFor="section80D" className="block text-sm font-medium mb-1">
+                  Section 80D Deductions (₹):
+                </label>
+                <input
+                  id="section80D"
+                  type="number"
+                  min="0"
+                  step="1000"
+                  className="w-full px-3 py-2 border rounded-md"
+                  value={deductions.section80D}
+                  onChange={handleDeductionsChange}
+                  name="section80D"
+                />
+              </div>
 
-              <label className="block text-xl font-semibold mt-4">Section 80E (₹)</label>
-              <input
-                type="text"
-                name="section80E"
-                value={deductions.section80E}
-                onChange={handleDeductionsChange}
-                className="mt-2 p-2 border border-gray-300 rounded w-full"
-                placeholder="Enter 80E Deduction"
-              />
+              <div className="mb-4">
+                <label htmlFor="section80E" className="block text-sm font-medium mb-1">
+                  Section 80E Deductions (₹):
+                </label>
+                <input
+                  id="section80E"
+                  type="number"
+                  min="0"
+                  step="1000"
+                  className="w-full px-3 py-2 border rounded-md"
+                  value={deductions.section80E}
+                  onChange={handleDeductionsChange}
+                  name="section80E"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="homeLoan" className="block text-sm font-medium mb-1">
+                  Home Loan Interest (₹):
+                </label>
+                <input
+                  id="homeLoan"
+                  type="number"
+                  min="0"
+                  step="1000"
+                  className="w-full px-3 py-2 border rounded-md"
+                  value={deductions.homeLoan}
+                  onChange={handleDeductionsChange}
+                  name="homeLoan"
+                />
+              </div>
             </>
           )}
 
@@ -202,23 +247,31 @@ export default function TaxSimulationPage() {
             <h2 className="text-xl font-semibold">Tax Calculation Breakdown</h2>
             <ul className="mt-4 space-y-2">
               {breakdown.map((item, index) => (
-                <li key={index} className="text-lg">{item}</li>
+                <li key={index} className="text-lg">
+                  {item}
+                </li>
               ))}
             </ul>
 
-            <p className="text-2xl font-bold mt-6">Total Tax Payable: ₹{tax.toFixed(2)}</p>
+            <p className="text-2xl font-bold mt-6">
+              Total Tax Payable: ₹{tax.toFixed(2)}
+            </p>
 
-            <h3 className="mt-8 text-xl font-semibold">Suggestions to Save Tax</h3>
+            <h3 className="mt-8 text-xl font-semibold">
+              Suggestions to Save Tax
+            </h3>
             <ul className="list-disc pl-6 mt-4 space-y-2">
               {suggestions.map((tip, index) => (
-                <li key={index} className="text-lg">{tip}</li>
+                <li key={index} className="text-lg">
+                  {tip}
+                </li>
               ))}
             </ul>
           </div>
         )}
       </div>
 
-      {tax !== null && <TaxChart tax={tax} breakdown={breakdown} />}
+      {tax !== null && <TaxChart breakdown={breakdown} />}
     </div>
   );
 }

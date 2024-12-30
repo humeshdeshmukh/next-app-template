@@ -34,7 +34,10 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning lang="en">
-      <head />
+      <head>
+        <meta name="description" content="Make beautiful websites regardless of your design experience." />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body
         className={clsx(
           "min-h-screen bg-background font-sans antialiased",
@@ -53,9 +56,7 @@ export default function RootLayout({
                 className="flex items-center gap-1 text-current"
                 href="https://nextui-docs-v2.vercel.app?utm_source=next-app-template"
                 title="nextui.org homepage"
-              >
-                
-              </Link>
+              />
             </footer>
           </div>
         </Providers>

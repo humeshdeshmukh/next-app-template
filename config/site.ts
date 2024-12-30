@@ -3,7 +3,8 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "TaxSim 2425",
-  description: "it is taxsim 2425 is tax simulation and hot to apply for tax gauid .",
+  description:
+    "it is taxsim 2425 is tax simulation and hot to apply for tax gauid .",
   navItems: [
     {
       label: "Home",
@@ -29,7 +30,6 @@ export const siteConfig = {
       label: "Advanced calculator",
       href: "/Advanced-calculator",
     },
-
   ],
   navMenuItems: [
     {

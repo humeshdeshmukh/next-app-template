@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext", // Use 'esnext' for better modern features
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ], // Including esnext for latest features
+    "lib": ["dom", "dom.iterable", "esnext"], // Including esnext for latest features
     "allowJs": true, // Allows JavaScript files to be imported and used
     "skipLibCheck": true, // Skips type checking of declaration files to improve build speed
     "strict": true, // Enables strict type checking options
@@ -24,9 +20,7 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ] // Allows for absolute imports based on your root directory
+      "@/*": ["./*"] // Allows for absolute imports based on your root directory
     }
   },
   "include": [

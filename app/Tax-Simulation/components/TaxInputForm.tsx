@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-"use client"
-import React from 'react';
+"use client";
+import React from "react";
 
 interface TaxInputFormProps {
   income: string;
@@ -14,13 +14,15 @@ interface TaxInputFormProps {
     homeLoan: string;
     others: string;
   };
-  setDeductions: React.Dispatch<React.SetStateAction<{
-    section80C: string;
-    section80D: string;
-    section80E: string;
-    homeLoan: string;
-    others: string;
-  }>>;
+  setDeductions: React.Dispatch<
+    React.SetStateAction<{
+      section80C: string;
+      section80D: string;
+      section80E: string;
+      homeLoan: string;
+      others: string;
+    }>
+  >;
   onSubmit: () => void;
 }
 
@@ -36,24 +38,31 @@ export default function TaxInputForm({
   return (
     <div className="space-y-8">
       {/* Income Section */}
-      <div>
-        <label className="block text-xl font-semibold">Annual Income (₹)</label>
+      <div className="mb-4">
+        <label htmlFor="income" className="block text-sm font-medium mb-1">
+          Annual Income (₹):
+        </label>
         <input
+          id="income"
           type="number"
+          min="0"
+          step="1000"
+          className="w-full px-3 py-2 border rounded-md"
           value={income}
-          onChange={(e) => setIncome(e.target.value)}
-          placeholder="Enter your annual income"
-          className="w-full p-3 border border-gray-300 rounded-lg"
+          onChange={(e) => setIncome(parseFloat(e.target.value).toString())}
         />
       </div>
 
       {/* Tax Regime Selection */}
-      <div>
-        <label className="block text-xl font-semibold">Tax Regime</label>
+      <div className="mb-4">
+        <label htmlFor="taxRegime" className="block text-sm font-medium mb-1">
+          Tax Regime:
+        </label>
         <select
+          id="taxRegime"
           value={taxRegime}
           onChange={(e) => setTaxRegime(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-lg"
+          className="w-full px-3 py-2 border rounded-md"
         >
           <option value="old">Old Regime (with deductions)</option>
           <option value="new">New Regime (without deductions)</option>
@@ -61,75 +70,105 @@ export default function TaxInputForm({
       </div>
 
       {/* Section for Old Regime Deductions */}
-      {taxRegime === 'old' && (
+      {taxRegime === "old" && (
         <>
-          <div>
-            <label className="block text-xl font-semibold">Section 80C Deductions (₹)</label>
+          <div className="mb-4">
+            <label htmlFor="section80C" className="block text-sm font-medium mb-1">
+              Section 80C Deductions (₹):
+            </label>
             <input
+              id="section80C"
               type="number"
-              name="section80C"
+              min="0"
+              step="1000"
+              className="w-full px-3 py-2 border rounded-md"
               value={deductions.section80C}
               onChange={(e) =>
-                setDeductions((prev) => ({ ...prev, section80C: e.target.value }))
+                setDeductions((prev) => ({
+                  ...prev,
+                  section80C: parseFloat(e.target.value).toString(),
+                }))
               }
-              placeholder="Enter Section 80C deduction"
-              className="w-full p-3 border border-gray-300 rounded-lg"
             />
           </div>
 
-          <div>
-            <label className="block text-xl font-semibold">Section 80D Deductions (₹)</label>
+          <div className="mb-4">
+            <label htmlFor="section80D" className="block text-sm font-medium mb-1">
+              Section 80D Deductions (₹):
+            </label>
             <input
+              id="section80D"
               type="number"
-              name="section80D"
+              min="0"
+              step="1000"
+              className="w-full px-3 py-2 border rounded-md"
               value={deductions.section80D}
               onChange={(e) =>
-                setDeductions((prev) => ({ ...prev, section80D: e.target.value }))
+                setDeductions((prev) => ({
+                  ...prev,
+                  section80D: parseFloat(e.target.value).toString(),
+                }))
               }
-              placeholder="Enter Section 80D deduction"
-              className="w-full p-3 border border-gray-300 rounded-lg"
             />
           </div>
 
-          <div>
-            <label className="block text-xl font-semibold">Section 80E Deductions (₹)</label>
+          <div className="mb-4">
+            <label htmlFor="section80E" className="block text-sm font-medium mb-1">
+              Section 80E Deductions (₹):
+            </label>
             <input
+              id="section80E"
               type="number"
-              name="section80E"
+              min="0"
+              step="1000"
+              className="w-full px-3 py-2 border rounded-md"
               value={deductions.section80E}
               onChange={(e) =>
-                setDeductions((prev) => ({ ...prev, section80E: e.target.value }))
+                setDeductions((prev) => ({
+                  ...prev,
+                  section80E: parseFloat(e.target.value).toString(),
+                }))
               }
-              placeholder="Enter Section 80E deduction"
-              className="w-full p-3 border border-gray-300 rounded-lg"
             />
           </div>
 
-          <div>
-            <label className="block text-xl font-semibold">Home Loan Interest Deductions (₹)</label>
+          <div className="mb-4">
+            <label htmlFor="homeLoan" className="block text-sm font-medium mb-1">
+              Home Loan Interest Deductions (₹):
+            </label>
             <input
+              id="homeLoan"
               type="number"
-              name="homeLoan"
+              min="0"
+              step="1000"
+              className="w-full px-3 py-2 border rounded-md"
               value={deductions.homeLoan}
               onChange={(e) =>
-                setDeductions((prev) => ({ ...prev, homeLoan: e.target.value }))
+                setDeductions((prev) => ({
+                  ...prev,
+                  homeLoan: parseFloat(e.target.value).toString(),
+                }))
               }
-              placeholder="Enter Home Loan deduction"
-              className="w-full p-3 border border-gray-300 rounded-lg"
             />
           </div>
 
-          <div>
-            <label className="block text-xl font-semibold">Other Deductions (₹)</label>
+          <div className="mb-4">
+            <label htmlFor="others" className="block text-sm font-medium mb-1">
+              Other Deductions (₹):
+            </label>
             <input
+              id="others"
               type="number"
-              name="others"
+              min="0"
+              step="1000"
+              className="w-full px-3 py-2 border rounded-md"
               value={deductions.others}
               onChange={(e) =>
-                setDeductions((prev) => ({ ...prev, others: e.target.value }))
+                setDeductions((prev) => ({
+                  ...prev,
+                  others: parseFloat(e.target.value).toString(),
+                }))
               }
-              placeholder="Enter other deductions"
-              className="w-full p-3 border border-gray-300 rounded-lg"
             />
           </div>
         </>
