@@ -1,88 +1,100 @@
-import { title } from "@/components/primitives";
 import { Link } from "@nextui-org/link";
 import { button as buttonStyles } from "@nextui-org/theme";
-import { subtitle } from "@/components/primitives";
-
-import { siteConfig } from "@/config/site";
-import { GithubIcon } from "@/components/icons";
+import { title, subtitle } from "@/components/primitives";
+import { Card, CardHeader, CardBody } from "@nextui-org/card";
+import { FaCalculator, FaChartLine, FaBook, FaRobot } from "react-icons/fa";
 
 export default function Home() {
+  const features = [
+    {
+      title: "Tax Simulation",
+      description: "Calculate and visualize your tax liability with our advanced tax simulation tool.",
+      icon: <FaCalculator className="w-6 h-6" />,
+      href: "/Tax-Simulation"
+    },
+    {
+      title: "Advanced Calculator",
+      description: "Complex financial calculations made simple with our comprehensive calculator.",
+      icon: <FaChartLine className="w-6 h-6" />,
+      href: "/Advanced-calculator"
+    },
+    {
+      title: "Tax Rules",
+      description: "Stay updated with the latest tax rules and regulations explained in simple terms.",
+      icon: <FaBook className="w-6 h-6" />,
+      href: "/Tax-Rules"
+    },
+    {
+      title: "AI Suggestions",
+      description: "Get personalized tax-saving suggestions powered by artificial intelligence.",
+      icon: <FaRobot className="w-6 h-6" />,
+      href: "/AI-Suggestions"
+    }
+  ];
+
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-12 md:py-16 bg-black text-white min-h-screen">
+    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
       <div className="inline-block max-w-4xl text-center justify-center">
-        <span className={title({ color: "foreground" })}>Welcome to&nbsp;</span>
-        <span className={title({ color: "violet" })}>TaxSim&nbsp;</span>
-        <span className={title({ color: "foreground" })}>2425</span>
-        <br />
-        <span className={title({ color: "foreground" })}>
-          Your tool for simulating and analyzing tax data.
-        </span>
-        <div className={subtitle({ class: "mt-4 text-lg text-gray-400" })}>
-          Visualize and forecast tax scenarios for the future.
-        </div>
+        <h1 className={title({ color: "violet" })}>Smart Tax Planning&nbsp;</h1>
+        <h1 className={title()}>
+          Made Simple with&nbsp;
+          <span className={title({ color: "violet" })}>AI</span>
+        </h1>
+        <h2 className={subtitle({ class: "mt-4" })}>
+          Optimize your tax planning with our intelligent tools and personalized suggestions
+        </h2>
       </div>
 
-      <div className="flex gap-6 mt-8">
+      <div className="flex gap-3 mt-8">
         <Link
-          className={buttonStyles({
-            color: "primary",
-            radius: "full",
-            variant: "shadow",
-            class: "px-8 py-3 text-lg",
-          })}
-          href="/Advanced-calculator"
+          href="/How-to-apply"
+          className={buttonStyles({ color: "primary", radius: "full", variant: "shadow", size: "lg" })}
         >
-          Advanced Calculator
+          Get Started
         </Link>
         <Link
-          className={buttonStyles({
-            color: "secondary",
-            radius: "full",
-            variant: "shadow",
-            class: "px-8 py-3 text-lg",
-          })}
-          href="/Tax-Simulation"
-        >
-          Tax Simulation
-        </Link>
-        <Link
-          className={buttonStyles({
-            variant: "bordered",
-            radius: "full",
-            class: "px-8 py-3 text-lg border-white text-white",
-          })}
           href="/Tax-Rules"
+          className={buttonStyles({ variant: "bordered", radius: "full", size: "lg" })}
         >
           Learn More
         </Link>
       </div>
 
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl">
-        <div className="p-6 bg-gray-800 shadow-lg rounded-lg">
-          <h3 className={subtitle()}>
-            Industrial Calculator
-          </h3>
-          <p>
-            Advanced tax calculations for businesses across different
-            industries. Features include:
-          </p>
-          <ul className="list-disc list-inside mt-2 text-gray-400">
-            <li>Industry-specific rates</li>
-            <li>Employee deductions</li>
-            <li>Revenue analysis</li>
-          </ul>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 max-w-6xl px-4">
+        {features.map((feature, index) => (
+          <Link href={feature.href} key={index} className="w-full">
+            <Card className="hover:scale-105 transition-transform duration-200">
+              <CardHeader className="flex gap-3 items-center">
+                <div className="p-2 bg-primary/10 rounded-lg text-primary">
+                  {feature.icon}
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-lg font-semibold">{feature.title}</p>
+                </div>
+              </CardHeader>
+              <CardBody>
+                <p className="text-default-500">{feature.description}</p>
+              </CardBody>
+            </Card>
+          </Link>
+        ))}
+      </div>
 
-        <div className="p-6 bg-gray-800 shadow-lg rounded-lg">
-          <h3 className={subtitle()}>Tax Simulation</h3>
-          <p>
-            Simulate and forecast your tax scenarios with our advanced tools:
-          </p>
-          <ul className="list-disc list-inside mt-2 text-gray-400">
-            <li>Future projections</li>
-            <li>Rate comparisons</li>
-            <li>Optimization suggestions</li>
-          </ul>
+      <div className="mt-16 text-center">
+        <h2 className={title({ size: "sm" })}>Why Choose Our Platform?</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-6xl px-4">
+          <div className="p-6 rounded-lg bg-default-50">
+            <h3 className="text-lg font-semibold mb-2">Accurate Calculations</h3>
+            <p className="text-default-500">Our advanced algorithms ensure precise tax calculations every time.</p>
+          </div>
+          <div className="p-6 rounded-lg bg-default-50">
+            <h3 className="text-lg font-semibold mb-2">AI-Powered Insights</h3>
+            <p className="text-default-500">Get personalized suggestions to optimize your tax planning.</p>
+          </div>
+          <div className="p-6 rounded-lg bg-default-50">
+            <h3 className="text-lg font-semibold mb-2">User-Friendly Interface</h3>
+            <p className="text-default-500">Simple and intuitive design makes tax planning accessible to everyone.</p>
+          </div>
         </div>
       </div>
     </section>

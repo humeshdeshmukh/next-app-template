@@ -1,14 +1,16 @@
-/* eslint-disable prettier/prettier */
 "use client";
-import { useState } from "react";
-import { title } from "@/components/primitives";
+import React, { useState } from "react";
+import { Card, CardBody } from "@nextui-org/card";
+import { Input } from "@nextui-org/input";
+import { Button } from "@nextui-org/button";
+import { Divider } from "@nextui-org/divider";
 import dynamic from "next/dynamic";
+import { FaCalculator, FaChartBar, FaInfoCircle } from "react-icons/fa";
 
-// Lazy load chart component
 const TaxChart = dynamic(() => import("./TaxChart"), { ssr: false });
 
 export default function TaxSimulationPage() {
-  const [income, setIncome] = useState<number | string>("");
+  const [income, setIncome] = useState<string>("");
   const [taxRegime, setTaxRegime] = useState("old");
   const [deductions, setDeductions] = useState({
     section80C: "",
@@ -18,8 +20,9 @@ export default function TaxSimulationPage() {
     others: "",
   });
   const [tax, setTax] = useState<number | null>(null);
-  const [error, setError] = useState("");
   const [breakdown, setBreakdown] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const handleIncomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,10 +43,11 @@ export default function TaxSimulationPage() {
   };
 
   const calculateTax = () => {
+    setLoading(true);
     setError("");
     setBreakdown([]);
     setSuggestions([]);
-    const annualIncome = parseFloat(income as string);
+    const annualIncome = parseFloat(income);
 
     const parsedDeductions = {
       section80C: parseFloat(deductions.section80C) || 0,
@@ -56,6 +60,7 @@ export default function TaxSimulationPage() {
     if (isNaN(annualIncome) || annualIncome <= 0) {
       setError("Please enter a valid income.");
       setTax(null);
+      setLoading(false);
       return;
     }
 
@@ -127,151 +132,223 @@ export default function TaxSimulationPage() {
     }
 
     setSuggestions(potentialSavings);
+    setLoading(false);
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8">
-      <h1 className={title()}>Advanced Tax Simulation</h1>
-      <div className="grid gap-6 mt-8 md:grid-cols-2">
-        <div>
-          <div className="mb-4">
-            <label htmlFor="annualIncome" className="block text-sm font-medium mb-1">
-              Annual Income (₹):
-            </label>
-            <input
-              id="annualIncome"
-              type="number"
-              min="0"
-              step="1000"
-              className="w-full px-3 py-2 border rounded-md"
-              value={income}
-              onChange={handleIncomeChange}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="taxRegime" className="block text-sm font-medium mb-1">
-              Tax Regime:
-            </label>
-            <select
-              id="taxRegime"
-              value={taxRegime}
-              onChange={(e) => setTaxRegime(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md"
-            >
-              <option value="old">Old Regime (with deductions)</option>
-              <option value="new">New Regime (without deductions)</option>
-            </select>
-          </div>
-
-          {taxRegime === "old" && (
-            <>
-              <div className="mb-4">
-                <label htmlFor="section80C" className="block text-sm font-medium mb-1">
-                  Section 80C Deductions (₹):
-                </label>
-                <input
-                  id="section80C"
-                  type="number"
-                  min="0"
-                  step="1000"
-                  className="w-full px-3 py-2 border rounded-md"
-                  value={deductions.section80C}
-                  onChange={handleDeductionsChange}
-                  name="section80C"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label htmlFor="section80D" className="block text-sm font-medium mb-1">
-                  Section 80D Deductions (₹):
-                </label>
-                <input
-                  id="section80D"
-                  type="number"
-                  min="0"
-                  step="1000"
-                  className="w-full px-3 py-2 border rounded-md"
-                  value={deductions.section80D}
-                  onChange={handleDeductionsChange}
-                  name="section80D"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label htmlFor="section80E" className="block text-sm font-medium mb-1">
-                  Section 80E Deductions (₹):
-                </label>
-                <input
-                  id="section80E"
-                  type="number"
-                  min="0"
-                  step="1000"
-                  className="w-full px-3 py-2 border rounded-md"
-                  value={deductions.section80E}
-                  onChange={handleDeductionsChange}
-                  name="section80E"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label htmlFor="homeLoan" className="block text-sm font-medium mb-1">
-                  Home Loan Interest (₹):
-                </label>
-                <input
-                  id="homeLoan"
-                  type="number"
-                  min="0"
-                  step="1000"
-                  className="w-full px-3 py-2 border rounded-md"
-                  value={deductions.homeLoan}
-                  onChange={handleDeductionsChange}
-                  name="homeLoan"
-                />
-              </div>
-            </>
-          )}
-
-          {error && <p className="text-red-500 mt-2">{error}</p>}
-
-          <button
-            onClick={calculateTax}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
-          >
-            Calculate Tax
-          </button>
-        </div>
-
-        {tax !== null && (
-          <div>
-            <h2 className="text-xl font-semibold">Tax Calculation Breakdown</h2>
-            <ul className="mt-4 space-y-2">
-              {breakdown.map((item, index) => (
-                <li key={index} className="text-lg">
-                  {item}
-                </li>
-              ))}
-            </ul>
-
-            <p className="text-2xl font-bold mt-6">
-              Total Tax Payable: ₹{tax.toFixed(2)}
-            </p>
-
-            <h3 className="mt-8 text-xl font-semibold">
-              Suggestions to Save Tax
-            </h3>
-            <ul className="list-disc pl-6 mt-4 space-y-2">
-              {suggestions.map((tip, index) => (
-                <li key={index} className="text-lg">
-                  {tip}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="text-center mb-10">
+        <h1 className="text-4xl font-bold mb-4">Advanced Tax Simulation</h1>
+        <p className="text-default-500 max-w-2xl mx-auto">
+          Calculate your tax liability and get a detailed breakdown of your tax components
+        </p>
       </div>
 
-      {tax !== null && <TaxChart breakdown={breakdown} />}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <Card className="p-6">
+          <CardBody>
+            <div className="flex items-center gap-2 mb-6">
+              <FaCalculator className="text-2xl text-primary" />
+              <h2 className="text-xl font-semibold">Input Details</h2>
+            </div>
+            
+            <div className="space-y-6">
+              <Input
+                type="number"
+                label="Annual Income"
+                placeholder="Enter your annual income"
+                value={income}
+                onChange={handleIncomeChange}
+                startContent={
+                  <div className="pointer-events-none flex items-center">
+                    <span className="text-default-400 text-small">₹</span>
+                  </div>
+                }
+                endContent={
+                  <div className="pointer-events-none flex items-center">
+                    <FaInfoCircle className="text-default-400" />
+                  </div>
+                }
+              />
+
+              <div className="mb-4">
+                <label htmlFor="taxRegime" className="block text-sm font-medium mb-1">
+                  Tax Regime:
+                </label>
+                <select
+                  id="taxRegime"
+                  value={taxRegime}
+                  onChange={(e) => setTaxRegime(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-md"
+                >
+                  <option value="old">Old Regime (with deductions)</option>
+                  <option value="new">New Regime (without deductions)</option>
+                </select>
+              </div>
+
+              {taxRegime === "old" && (
+                <>
+                  <Input
+                    type="number"
+                    label="Section 80C Deductions"
+                    placeholder="Enter your Section 80C deductions"
+                    value={deductions.section80C}
+                    onChange={handleDeductionsChange}
+                    name="section80C"
+                    startContent={
+                      <div className="pointer-events-none flex items-center">
+                        <span className="text-default-400 text-small">₹</span>
+                      </div>
+                    }
+                    endContent={
+                      <div className="pointer-events-none flex items-center">
+                        <FaInfoCircle className="text-default-400" />
+                      </div>
+                    }
+                  />
+
+                  <Input
+                    type="number"
+                    label="Section 80D Deductions"
+                    placeholder="Enter your Section 80D deductions"
+                    value={deductions.section80D}
+                    onChange={handleDeductionsChange}
+                    name="section80D"
+                    startContent={
+                      <div className="pointer-events-none flex items-center">
+                        <span className="text-default-400 text-small">₹</span>
+                      </div>
+                    }
+                    endContent={
+                      <div className="pointer-events-none flex items-center">
+                        <FaInfoCircle className="text-default-400" />
+                      </div>
+                    }
+                  />
+
+                  <Input
+                    type="number"
+                    label="Section 80E Deductions"
+                    placeholder="Enter your Section 80E deductions"
+                    value={deductions.section80E}
+                    onChange={handleDeductionsChange}
+                    name="section80E"
+                    startContent={
+                      <div className="pointer-events-none flex items-center">
+                        <span className="text-default-400 text-small">₹</span>
+                      </div>
+                    }
+                    endContent={
+                      <div className="pointer-events-none flex items-center">
+                        <FaInfoCircle className="text-default-400" />
+                      </div>
+                    }
+                  />
+
+                  <Input
+                    type="number"
+                    label="Home Loan Interest"
+                    placeholder="Enter your home loan interest"
+                    value={deductions.homeLoan}
+                    onChange={handleDeductionsChange}
+                    name="homeLoan"
+                    startContent={
+                      <div className="pointer-events-none flex items-center">
+                        <span className="text-default-400 text-small">₹</span>
+                      </div>
+                    }
+                    endContent={
+                      <div className="pointer-events-none flex items-center">
+                        <FaInfoCircle className="text-default-400" />
+                      </div>
+                    }
+                  />
+                </>
+              )}
+
+              {error && <p className="text-red-500 mt-2">{error}</p>}
+
+              <Button
+                color="primary"
+                size="lg"
+                className="w-full"
+                onClick={calculateTax}
+                isLoading={loading}
+              >
+                Calculate Tax
+              </Button>
+            </div>
+          </CardBody>
+        </Card>
+
+        <Card className="p-6">
+          <CardBody>
+            <div className="flex items-center gap-2 mb-6">
+              <FaChartBar className="text-2xl text-primary" />
+              <h2 className="text-xl font-semibold">Tax Breakdown</h2>
+            </div>
+
+            {tax !== null ? (
+              <div className="space-y-4">
+                {breakdown.map((step, index) => (
+                  <div key={index} className="p-3 bg-default-100 rounded-lg">
+                    {step}
+                  </div>
+                ))}
+                
+                <Divider className="my-4" />
+                
+                <div className="text-center">
+                  <p className="text-sm text-default-500 mb-2">Total Tax Liability</p>
+                  <p className="text-3xl font-bold text-primary">
+                    ₹{tax.toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center text-default-500 py-8">
+                Enter your income and calculate to see the tax breakdown
+              </div>
+            )}
+          </CardBody>
+        </Card>
+      </div>
+
+      {tax !== null && (
+        <Card className="mt-8 p-6">
+          <CardBody>
+            <div className="flex items-center gap-2 mb-6">
+              <FaChartBar className="text-2xl text-primary" />
+              <h2 className="text-xl font-semibold">Visualization</h2>
+            </div>
+            <TaxChart breakdown={breakdown} />
+          </CardBody>
+        </Card>
+      )}
+
+      {tax !== null && (
+        <Card className="mt-8 p-6">
+          <CardBody>
+            <h3 className="text-lg font-semibold mb-4">Suggestions to Save Tax</h3>
+            <ul className="list-disc list-inside space-y-2 text-default-600">
+              {suggestions.map((tip, index) => (
+                <li key={index}>{tip}</li>
+              ))}
+            </ul>
+          </CardBody>
+        </Card>
+      )}
+
+      <Card className="mt-8 p-6 bg-primary-50">
+        <CardBody>
+          <h3 className="text-lg font-semibold mb-4">Important Notes</h3>
+          <ul className="list-disc list-inside space-y-2 text-default-600">
+            <li>This is a simplified tax calculator for illustration purposes</li>
+            <li>Actual tax calculations may vary based on various deductions and exemptions</li>
+            <li>Consult a tax professional for accurate tax planning</li>
+          </ul>
+        </CardBody>
+      </Card>
     </div>
   );
 }
